@@ -13,12 +13,13 @@ class Login extends Component {
     return (
      <div>
        <Segment>
-         <Input onChange={this.onChangeHandler}
-                value={token}
-                placeholder="Введите auth_token"/>
-         <Button primary disabled={token === ''}
-                 onClick={this.onClickHandler}
-                 style={{marginLeft: '15px'}}>Войти</Button>
+         <form onSubmit={this.onSubmitHandler}>
+           <Input onChange={this.onChangeHandler}
+                  value={token}
+                  placeholder="Введите auth_token"/>
+           <Button primary disabled={token === ''}
+                   style={{marginLeft: '15px'}}>Войти</Button>
+         </form>
        </Segment>
        <TokenInfo />
      </div>
@@ -26,7 +27,10 @@ class Login extends Component {
   }
 
   onChangeHandler = ({target: { value: token }}) => this.setState({token});
-  onClickHandler = () => { /*ToDo: call actionCreator*/  };
+  onSubmitHandler = (e) => {
+    e.preventDefault();
+    /*ToDo: call actionCreator*/
+  };
 }
 
 const TokenInfo = () => {
