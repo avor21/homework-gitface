@@ -1,9 +1,5 @@
-import { createActions, handleActions } from 'redux-actions';
+import { createActions } from 'redux-actions';
 
-const actionCreators = createActions({
+export const authActionCreators = createActions({
   AUTH_REQUEST: undefined
 });
-
-
-
-export const { authRequest } = actionCreators;

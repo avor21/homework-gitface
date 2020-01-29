@@ -1,4 +1,6 @@
 import React, {Component} from "react";
+import {connect} from 'react-redux';
+import {authRequest} from "../../ducks";
 import {Message, Divider, Input, Button, Segment} from "semantic-ui-react";
 import './Login.css';
 
@@ -29,7 +31,7 @@ class Login extends Component {
   onChangeHandler = ({target: { value: token }}) => this.setState({token});
   onSubmitHandler = (e) => {
     e.preventDefault();
-    /*ToDo: call actionCreator*/
+    this.props.authRequest(this.state.token);
   };
 }
 
@@ -49,4 +51,4 @@ const TokenInfo = () => {
 };
 
 
-export default Login;
+export default connect(null, { authRequest })(Login);
