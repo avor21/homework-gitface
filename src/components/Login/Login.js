@@ -5,24 +5,30 @@ import './Login.css';
 const Login = () => {
   return (
     <div>
-      <Message warning>
-        <Message.Header>Авторизация</Message.Header>
-        <Divider />
-        <p>
-          Получить токен следует на своей странице github.
-          Перейдите по <a href="https://github.com/settings/tokens">адресу</a>
-          и создайте себе токен.
-          Запишите куда нибудь токен, так как после создания
-          доступ к нему будет только один раз.
-        </p>
-      </Message>
       <Segment>
         <Input placeholder="Введите auth_token"/>
         <Button style={{marginLeft: '15px'}}
                 primary disabled>Войти</Button>
       </Segment>
+      <TokenInfo />
     </div>
   );
 };
+
+const TokenInfo = () => {
+  return (
+    <Message info>
+      <Message.Header>Как получить токен github?</Message.Header>
+      <Divider />
+      <p>
+        Вы можете создать его по  <a href="https://github.com/settings/tokens">ссылке</a>.
+        <br />
+        Не забудьте записать токен, т.к. после создания
+        доступ к нему предоставляется только один раз.
+      </p>
+    </Message>
+  );
+};
+
 
 export default Login;
