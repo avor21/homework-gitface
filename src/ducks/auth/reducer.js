@@ -1,11 +1,12 @@
-import {handleAction} from "redux-actions";
+import {handleActions} from "redux-actions";
 import {combineReducers} from "redux";
-import {authRequest} from "./actions";
+import {authRequest, logout} from "./actions";
 
-const isAuthorized = handleAction(
-  authRequest,
-  () => true,
-  false
+const isAuthorized = handleActions({
+ [authRequest.toString()]: () => true,
+ [logout.toString()]: () => false
+ },
+ false
 );
 
 export default combineReducers({

@@ -1,5 +1,6 @@
 import {createActions} from "redux-actions";
 
-export const { authRequest } = createActions({
-  AUTH_REQUEST: undefined
-});
+export const { authRequest, logout } = createActions(
+  'AUTH_REQUEST',
+  'LOGOUT'
+);
