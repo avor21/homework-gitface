@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {connect} from 'react-redux';
-import {authRequest} from "../../ducks";
+import {authRequest} from "../../ducks/auth";
 import {Message, Divider, Input, Button, Segment} from "semantic-ui-react";
 import './Login.css';
 
