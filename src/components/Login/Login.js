@@ -1,19 +1,33 @@
-import React from "react";
+import React, {Component} from "react";
 import {Message, Divider, Input, Button, Segment} from "semantic-ui-react";
 import './Login.css';
 
-const Login = () => {
-  return (
-    <div>
-      <Segment>
-        <Input placeholder="Введите auth_token"/>
-        <Button style={{marginLeft: '15px'}}
-                primary disabled>Войти</Button>
-      </Segment>
-      <TokenInfo />
-    </div>
-  );
-};
+class Login extends Component {
+  state = {
+    token: ''
+  };
+
+  render() {
+    const { token } = this.state;
+
+    return (
+     <div>
+       <Segment>
+         <Input onChange={this.onChangeHandler}
+                value={token}
+                placeholder="Введите auth_token"/>
+         <Button primary disabled={token === ''}
+                 onClick={this.onClickHandler}
+                 style={{marginLeft: '15px'}}>Войти</Button>
+       </Segment>
+       <TokenInfo />
+     </div>
+    );
+  }
+
+  onChangeHandler = ({target: { value: token }}) => this.setState({token});
+  onClickHandler = () => { /*ToDo: call actionCreator*/  };
+}
 
 const TokenInfo = () => {
   return (
