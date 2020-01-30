@@ -1,5 +1,5 @@
 import {createActions} from 'redux-actions';
 
-const { fetchTokenOwner } = createActions({
-  FETCH_TOKEN_OWNER: undefined
+export const { fetchTokenOwnerRequest } = createActions({
+  FETCH_TOKEN_OWNER_REQUEST: undefined
 });

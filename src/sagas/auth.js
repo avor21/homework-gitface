@@ -1,6 +1,6 @@
 import {take,  call, select, put} from 'redux-saga/effects';
 import {authRequest, logout, getIsAuthorize} from '../ducks/auth';
-import {clearTokenApi, setTokenApi} from "../api";
+import {clearTokenApi, getTokenOwner, setTokenApi} from "../api";
 import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalStorage} from "../localStorage";
 
 export const authFlow = function * () {
@@ -11,19 +11,29 @@ export const authFlow = function * () {
     let token;
 
     if(!isAuthorized && localStorageToken) {
-      token = yield call(getTokenFromLocalStorage);
+      token = localStorageToken;
       yield put(authRequest());
     } else {
       const action = yield take(authRequest);
       token = action.payload;
     }
 
-    yield call(setTokenApi, token);
-    yield call(setTokenToLocalStorage, token);
+    try {
+      yield call(setTokenApi, token);
+      const response = yield call(getTokenOwner);
+      if (response.data) {
+        yield call(setTokenToLocalStorage, token);
+      }
+    } catch (error) {
+      yield put(logout());
+    }
+
 
     yield take(logout);
-
+    console.log('--1')
     yield call(removeTokenFromLocalStorage);
+    console.log('--2')
     yield call(clearTokenApi);
+    console.log('--3')
   }
 };

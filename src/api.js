@@ -5,11 +5,13 @@ const instance = axios.create({
 });
 
 export const setTokenApi = access_token => {
-  instance.defaults.params = { access_token };
+  instance.defaults.headers.common['Authorization'] = `Bearer ${access_token}`;
+  // instance.defaults.params = { access_token };
+  //'Authorization': `Bearer ${process.env.GITHUB_AUTH_TOKEN}`
 };
 
 export const clearTokenApi = () => {
-  instance.defaults.params = { access_token: undefined };
+  delete instance.defaults.headers.common['Authorization']
 };
 
 export const getUserInformation = login => instance(`users/${login}`);
