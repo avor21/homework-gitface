@@ -1,5 +1,6 @@
 import {take,  call, select, put} from 'redux-saga/effects';
 import {authRequest, logout, getIsAuthorize} from '../ducks/auth';
+import {fetchUserSuccess} from "../ducks/users";
 import {clearTokenApi, getTokenOwner, setTokenApi} from "../api";
 import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalStorage} from "../localStorage";
 
@@ -23,6 +24,7 @@ export const authFlow = function * () {
       const response = yield call(getTokenOwner);
       if (response.data) {
         yield call(setTokenToLocalStorage, token);
+        yield put(fetchUserSuccess(response.data));
       }
     } catch (error) {
       yield put(logout());
