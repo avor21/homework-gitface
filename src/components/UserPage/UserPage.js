@@ -18,7 +18,7 @@ class UserPage extends Component{
     const { isFetching} = this.props;
 
     return (
-      <Segment placeholder>
+      <Segment placeholder compact>
         { isFetching ? this.renderPreloader() : this.renderUserCard() }
 
       </Segment>
