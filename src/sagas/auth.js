@@ -1,8 +1,12 @@
-import {take,  call, select, put} from 'redux-saga/effects';
+import {take, call, select, put} from 'redux-saga/effects';
 import {authRequest, authSuccess, logout, getIsAuthorize} from '../ducks/auth';
-import {fetchUserSuccess} from "../ducks/users";
-import {clearTokenApi, getTokenOwner, setTokenApi} from "../api";
+import {fetchUserSuccess, fetchUserFailure, fetchUserRequest} from "../ducks/users";
+import {clearTokenApi, setTokenApi} from "../api";
 import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalStorage} from "../localStorage";
+
+/*
+    FixMe: Не ловится logout()
+ */
 
 export const authFlow = function * () {
   while (true) {
@@ -21,11 +25,13 @@ export const authFlow = function * () {
 
     try {
       yield call(setTokenApi, token);
-      const response = yield call(getTokenOwner);
-      if (response.data) {
+      yield put(fetchUserRequest());
+      const action = yield take([fetchUserSuccess, fetchUserFailure]);
+      if (action.type === fetchUserSuccess.toString()) {
         yield call(setTokenToLocalStorage, token);
-        yield put(fetchUserSuccess(response.data));
         yield put(authSuccess());
+      } else {
+        yield put(logout());
       }
     } catch (error) {
       yield put(logout());
@@ -33,10 +39,8 @@ export const authFlow = function * () {
 
 
     yield take(logout);
-    console.log('--1')
+    console.log('where is logout?!');
     yield call(removeTokenFromLocalStorage);
-    console.log('--2')
     yield call(clearTokenApi);
-    console.log('--3')
   }
 };

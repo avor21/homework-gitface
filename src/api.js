@@ -11,7 +11,7 @@ export const setTokenApi = access_token => {
 };
 
 export const clearTokenApi = () => {
-  delete instance.defaults.headers.common['Authorization']
+  delete instance.defaults.headers.common['Authorization'];
 };
 
 export const getUserInformation = login => instance(`users/${login}`);
