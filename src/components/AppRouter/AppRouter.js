@@ -21,10 +21,9 @@ const AppRouter = (props) => {
       </ul>
 
       <Switch>
-        <Route path='/login' component={Login}/>
+        {!isAuthorized && <Route path='/login' component={Login}/>}
         <ProtectedRoute path='/user/me' component={UserPage}/>
         <Redirect to="/user/me"/>
-
       </Switch>
 
     </div>
