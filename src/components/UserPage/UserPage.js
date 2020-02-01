@@ -6,7 +6,7 @@ import {
   getIsFetching,
   getUserInfo
 } from "../../ducks/users";
-import {Header, Image, Label, Segment} from "semantic-ui-react";
+import {Container, Header, Icon, Image, Label, Segment} from "semantic-ui-react";
 
 class UserPage extends Component{
   componentDidMount() {
@@ -28,17 +28,19 @@ class UserPage extends Component{
   renderUserCard = () => {
     const { login, followers, following, avatar_url: avatar } = this.props.user;
     return (
-      <div>
+      <div className="container">
         <Image src={avatar} size="medium" circular floated='left' />
-        <Header as="h2">{login}</Header>
-        <Label>
+        <Container text >
+        <Header as="h2" >{login}</Header>
+        <Label as="a" color='olive'>
           Followers
           <Label.Detail>{followers}</Label.Detail>
         </Label>
-        <Label>
+        <Label as="a" color='olive'>
           Following
           <Label.Detail>{following}</Label.Detail>
         </Label>
+        </Container>
       </div>
     );
   };
