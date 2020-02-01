@@ -10,9 +10,7 @@ const fetchUserSaga = function * () {
   try {
     const response = yield call(getTokenOwner);
     yield put(fetchUserSuccess(response.data));
-
   } catch (error) {
     yield put(fetchUserFailure(error))
   }
-
 };

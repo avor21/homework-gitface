@@ -6,7 +6,6 @@ import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalSt
 
 export const authorizeWatcher = function * () {
   while (true) {
-
     const isAuthorized = yield select(getIsAuthorize);
     const localStorageToken = yield call(getTokenFromLocalStorage);
 
