@@ -1,35 +1,50 @@
-import React from "react";
+import React, {Component} from "react";
 import {Link, Redirect, Route, Switch} from 'react-router-dom';
 import Login from "../Login";
 import {connect} from "react-redux";
-import {getIsAuthorize} from "../../ducks/auth";
+import {getIsAuthorize, logout} from "../../ducks/auth";
 import UserPage from "../UserPage";
 import './AppRouter.css'
 import ProtectedRoute from "../ProtectedRoute";
 
-const AppRouter = (props) => {
-  const { isAuthorized } = props;
-  return (
-    <div className="App">
-      <ul>
-        <li>
-          <Link to="/login">Авторизация</Link>
-        </li>
-        <li>
-          <Link to="/user/me">Страница пользователя</Link>
-        </li>
-      </ul>
 
-      <Switch>
-        {!isAuthorized && <Route path='/login' component={Login}/>}
-        <ProtectedRoute path='/user/me' component={UserPage}/>
-        <Redirect to="/user/me"/>
-      </Switch>
+class AppRouter extends Component {
+  render() {
+    const { isAuthorized } = this.props;
 
-    </div>
-  );
-};
+    return (
+      <div className="App">
+
+        <ul>
+          <li>
+            <Link to="/login">Авторизация</Link>
+          </li>
+
+          { isAuthorized &&
+            <>
+              <li><Link to="/user/me">Страница пользователя</Link></li>
+              <li><Link to="/logout" onClick={this.logoutHandler}>Выход</Link></li>
+            </>
+          }
+        </ul>
+
+        <Switch>
+          <Route path='/login' component={Login}/>
+          <ProtectedRoute path='/user/me' component={UserPage}/>
+          <Redirect to="/user/me"/>
+        </Switch>
+
+      </div>
+    );
+  }
+
+  logoutHandler = (e) => {
+    e.preventDefault();
+    this.props.logout();
+
+  };
+}
 
 export default connect(state => ({
   isAuthorized: getIsAuthorize(state)
-}))(AppRouter);
+}), { logout })(AppRouter);

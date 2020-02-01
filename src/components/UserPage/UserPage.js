@@ -6,12 +6,12 @@ import {
   getIsFetching,
   getUserInfo
 } from "../../ducks/users";
-import {Container, Header, Icon, Image, Label, Segment} from "semantic-ui-react";
+import {Container, Header, Image, Label, Segment} from "semantic-ui-react";
 
 class UserPage extends Component{
   componentDidMount() {
     const { fetchUserRequest, isFetched } = this.props;
-    isFetched && fetchUserRequest();
+    !isFetched && fetchUserRequest();
   }
 
   render() {
@@ -26,20 +26,22 @@ class UserPage extends Component{
   }
 
   renderUserCard = () => {
+    if (this.props.user === null) return;
+
     const { login, followers, following, avatar_url: avatar } = this.props.user;
     return (
       <div className="container">
-        <Image src={avatar} size="medium" circular floated='left' />
         <Container text >
-        <Header as="h2" >{login}</Header>
-        <Label as="a" color='olive'>
-          Followers
-          <Label.Detail>{followers}</Label.Detail>
-        </Label>
-        <Label as="a" color='olive'>
-          Following
-          <Label.Detail>{following}</Label.Detail>
-        </Label>
+          <Image src={avatar} size="medium" circular floated='left' />
+          <Header as="h2" >{login}</Header>
+          <Label as="a" color='olive'>
+            Followers
+            <Label.Detail>{followers}</Label.Detail>
+          </Label>
+          <Label as="a" color='olive'>
+            Following
+            <Label.Detail>{following}</Label.Detail>
+          </Label>
         </Container>
       </div>
     );

@@ -1,6 +1,7 @@
 import {handleActions, combineActions} from 'redux-actions';
 import {combineReducers} from "redux";
 import {fetchUserRequest, fetchUserSuccess, fetchUserFailure} from "./actions";
+import {logout} from "../auth";
 
 const isFetching =  handleActions({
   [fetchUserRequest]: () => true,
@@ -10,7 +11,8 @@ const isFetching =  handleActions({
 );
 
 const data =  handleActions({
-    [fetchUserSuccess]: (state, action) => action.payload
+    [fetchUserSuccess]: (state, action) => action.payload,
+    [logout]: () => null
   },
   null
 );

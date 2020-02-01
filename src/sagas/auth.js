@@ -1,21 +1,18 @@
-import {take, call, select, put} from 'redux-saga/effects';
+import {fork, take, call, select, put} from 'redux-saga/effects';
 import {authRequest, authSuccess, logout, getIsAuthorize} from '../ducks/auth';
-import {fetchUserSuccess, fetchUserFailure, fetchUserRequest} from "../ducks/users";
-import {clearTokenApi, setTokenApi} from "../api";
+import {clearTokenApi, getTokenOwner, setTokenApi} from "../api";
 import {getTokenFromLocalStorage, removeTokenFromLocalStorage, setTokenToLocalStorage} from "../localStorage";
 
-/*
-    FixMe: Не ловится logout()
- */
 
-export const authFlow = function * () {
+export const authorizeWatcher = function * () {
   while (true) {
+
     const isAuthorized = yield select(getIsAuthorize);
     const localStorageToken = yield call(getTokenFromLocalStorage);
 
     let token;
 
-    if(!isAuthorized && localStorageToken) {
+    if (localStorageToken && !isAuthorized) {
       token = localStorageToken;
       yield put(authSuccess());
     } else {
@@ -23,24 +20,28 @@ export const authFlow = function * () {
       token = action.payload;
     }
 
-    try {
-      yield call(setTokenApi, token);
-      yield put(fetchUserRequest());
-      const action = yield take([fetchUserSuccess, fetchUserFailure]);
-      if (action.type === fetchUserSuccess.toString()) {
-        yield call(setTokenToLocalStorage, token);
-        yield put(authSuccess());
-      } else {
-        yield put(logout());
-      }
-    } catch (error) {
-      yield put(logout());
-    }
-
-
-    yield take(logout);
-    console.log('where is logout?!');
-    yield call(removeTokenFromLocalStorage);
-    yield call(clearTokenApi);
+    yield fork(loginFlow, token);
+    yield fork(logoutSaga);
   }
+};
+
+const loginFlow = function * (token) {
+  try {
+    yield call(setTokenApi, token);
+    const response = yield call(getTokenOwner);
+    if (response) {
+      yield call(setTokenToLocalStorage, token);
+      yield put(authSuccess());
+    }
+  } catch (error) {
+    yield put(logout());
+  }
+};
+
+
+const logoutSaga = function * () {
+  yield take(logout);
+
+  yield call(removeTokenFromLocalStorage);
+  yield call(clearTokenApi);
 };
