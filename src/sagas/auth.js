@@ -30,7 +30,10 @@ const loginFlow = function * (token) {
     const response = yield call(getTokenOwner);
     if (response) {
       yield call(setTokenToLocalStorage, token);
-      yield put(authSuccess());
+      const isAuthorized = yield select(getIsAuthorize);
+      if (!isAuthorized) {
+        yield put(authSuccess());
+      }
     }
   } catch (error) {
     yield put(logout());
