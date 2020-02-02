@@ -3,7 +3,7 @@ import {Redirect, Route} from "react-router-dom";
 import {connect} from "react-redux";
 import {getIsAuthorize} from "../../ducks/auth";
 
-class ProtectedRoute extends Component {
+export class ProtectedRoute extends Component {
   render() {
     const {component, ...rest} = this.props;
     return <Route {...rest} render={this.renderProtected}/>

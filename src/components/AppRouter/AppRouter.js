@@ -8,7 +8,7 @@ import './AppRouter.css'
 import ProtectedRoute from "../ProtectedRoute";
 
 
-class AppRouter extends Component {
+export class AppRouter extends Component {
   render() {
     const { isAuthorized } = this.props;
 
@@ -31,6 +31,7 @@ class AppRouter extends Component {
         <Switch>
           <Route path='/login' component={Login}/>
           <ProtectedRoute path='/user/me' component={UserPage}/>
+          <ProtectedRoute path='/user/:name' component={UserPage}/>
           <Redirect to="/user/me"/>
         </Switch>
 
