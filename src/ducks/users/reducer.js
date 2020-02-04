@@ -4,8 +4,8 @@ import {fetchUserRequest, fetchUserSuccess, fetchUserFailure} from "./actions";
 import {logout} from "../auth";
 
 const isFetching =  handleActions({
-  [fetchUserRequest]: () => true,
-  [combineActions(fetchUserSuccess, fetchUserFailure)]: () => false
+    [fetchUserRequest]: () => true,
+    [combineActions(fetchUserSuccess, fetchUserFailure, logout)]: () => false
   },
   false
 );
@@ -18,14 +18,15 @@ const data =  handleActions({
 );
 
 const isFetched =  handleActions({
-    [fetchUserRequest]: () => false,
+    [combineActions(fetchUserRequest, logout)]: () => false,
     [combineActions(fetchUserSuccess, fetchUserFailure)]: () => true
   },
   false
 );
 
 const error =  handleActions({
-    [fetchUserFailure]: (state, action) => action.payload
+    [fetchUserFailure]: (state, action) => action.payload,
+    [logout]: () => null
   },
   null
 );

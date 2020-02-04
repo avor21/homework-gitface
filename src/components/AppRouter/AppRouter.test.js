@@ -7,7 +7,6 @@ import ProtectedRoute from "../ProtectedRoute";
 
 describe('[ AppRouter ]', () => {
   const wrapper = shallow(<AppRouter />);
-  console.log(wrapper.debug());
 
   it('должен содержать <Switch> ', () => {
     expect(wrapper.find(Switch)).toHaveLength(1);

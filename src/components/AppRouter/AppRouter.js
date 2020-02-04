@@ -7,6 +7,7 @@ import UserPage from "../UserPage";
 import './AppRouter.css'
 import ProtectedRoute from "../ProtectedRoute";
 
+/* ToDo: Добавить кнопку Войти/Выйти */
 
 export class AppRouter extends Component {
   render() {
