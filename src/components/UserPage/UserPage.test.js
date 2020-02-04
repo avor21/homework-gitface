@@ -1,7 +1,7 @@
 import React from "react";
 import {UserPage} from "./UserPage";
-import {shallow, mount} from 'enzyme';
-
+import {shallow} from 'enzyme';
+import {LabelDetail} from "semantic-ui-react";
 
 
 describe('[ UserPage ]', () => {
@@ -12,17 +12,17 @@ describe('[ UserPage ]', () => {
     });
 
   it('отображает лоадер при загрузке данных', () => {
-    const wrapper = mount(<UserPage fetchUserRequest={jest.fn()} isFetching={true} />);
-    expect(wrapper.containsMatchingElement(<p>Загрузка...</p>)).toBeTruthy();
+    const wrapper = shallow(<UserPage fetchUserRequest={jest.fn()} isFetching={true} />);
+    expect(wrapper.contains(<p>Загрузка...</p>)).toBeTruthy();
   });
 
   it('выводит сообщение об отсутствии пользователя, если isFetching === false && user == null', () => {
-    const wrapper = mount(
+    const wrapper = shallow(
       <UserPage fetchUserRequest={jest.fn()}
                 isFetching={false}
                 user={null}
       />);
-    expect(wrapper.containsMatchingElement(<p>Пользователь не найден</p>)).toBeTruthy();
+    expect(wrapper.contains(<p>Пользователь не найден</p>)).toBeTruthy();
   });
 
   describe('[ UserPage ] Информация о пользователе', () => {
@@ -33,7 +33,7 @@ describe('[ UserPage ]', () => {
       following: 100
     };
 
-    const wrapper = mount(
+    const wrapper = shallow(
       <UserPage fetchUserRequest={jest.fn()}
                 isFetching={false}
                 isFetched={true}
@@ -41,19 +41,19 @@ describe('[ UserPage ]', () => {
       />);
 
     it('содержит аватар', () => {
-      expect(wrapper.find('img.user__avatar')).toHaveLength(1);
+      expect(wrapper.find('.user__avatar').prop('src')).toEqual(user.avatar_url);
     });
 
     it('содержит логин', () => {
-      expect(wrapper.text().includes(user.login)).toBeTruthy();
+      expect(wrapper.find('.user__login').dive().text()).toEqual(user.login);
     });
 
     it('отображает количество читателей', () => {
-      expect(wrapper.text().includes(user.followers)).toBeTruthy();
+      expect(wrapper.find('.user__followers').contains(<LabelDetail>{user.followers}</LabelDetail>)).toBeTruthy();
     });
 
     it('отображает количество подписок', () => {
-      expect(wrapper.text().includes(user.following)).toBeTruthy();
+      expect(wrapper.find('.user__following').contains(<LabelDetail>{user.following}</LabelDetail>)).toBeTruthy();
     });
 
     it('содержит компонент Followers с передачей логин через props', () => {});

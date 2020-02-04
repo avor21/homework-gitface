@@ -33,12 +33,12 @@ export class UserPage extends Component{
       <div className="container">
         <Container text >
           <Image src={avatar} className="user__avatar" size="medium" circular floated='left' />
-          <Header as="h2" >{login}</Header>
-          <Label as="a" color='olive'>
+          <Header as="h2" className="user__login">{login}</Header>
+          <Label as="a" color='olive' className="user__followers">
             Followers
             <Label.Detail>{followers}</Label.Detail>
           </Label>
-          <Label as="a" color='olive'>
+          <Label as="a" color='olive' className="user__following">
             Following
             <Label.Detail>{following}</Label.Detail>
           </Label>
